@@ -296,3 +296,249 @@ console.log(cart1.toString());
 
 
 
+//unfinished...
+
+
+/*class CarError extends Error {
+   constructor(message) {
+       super()
+       this.message = message
+   }
+};
+const setCarPrice = function(year,price){
+   if(year<2003){
+     return new CarError("This car is too old")   ///
+   }else{
+       let startPrice = price
+       for(let i = 2005;i <= year;i++){
+           startPrice += 0.1 * price
+       } return startPrice
+   }
+}
+const carNames = new Map()
+carNames.set("mercedes", [
+   {
+       setHorsePower(engineVolume) {
+           let counter
+           switch (engineVolume) {
+               case 1.3:
+                   counter = 136;
+                   break;
+               case 2:
+                   counter = 190;
+                   break;
+               case "2d":
+                   counter = 150
+                   break;
+               default:
+                   counter = "Can not find this engine"
+
+           }
+           return this.horsePower = counter
+       },
+       
+       model: "a-class",
+       enginePower: [1.3, 2, "2.3d"],
+       engineVolume: 0,
+       hosePower: 0,
+       year:2005,
+       price:3500,
+
+   },
+   {
+       model: "b-class"
+   },
+   {
+       model: "c-class"
+   },
+   {
+       model: "e-class"
+   },
+   {
+       model: "s-class"
+   },
+   {
+       model: "g-class"
+   },
+   {
+       model: "gl-class"
+   },
+   {
+       model: "ml-class"
+   }])
+class Vehicle {
+   //price = undefined
+   name = undefined
+   year = undefined
+   //_model = null
+   
+   #horsePower = null
+   #fuelType = null
+   #maxSpeed = null
+
+   
+   get maxSpeed() {
+       return this._maxSpeed
+   }
+   set engineVolume(value) {
+       this._engineVolume = value
+   }
+   get engineVolume() {
+       return this._engineVolume
+   }
+
+
+   defineHorsePower() {
+       return this.#horsePower
+   }
+   get fuelType() {
+       return this.#fuelType
+   }
+}
+
+class Car extends Vehicle {
+   type = null
+   color = null
+   engineVolume = null
+   _model = null
+   _mileage = null
+   #horsePower = null
+   #price = null
+
+   set mileage(value) {
+       this._mileage = value
+   }
+   get mileage() {
+       return this._mileage
+   }
+   set model(value) {
+       this._model = value
+   }
+
+
+   get model() {
+       return this._model
+   }
+   checkCarName() {
+       if (carNames.has(this.name.toLowerCase())) {
+           return this.name
+       } else {
+           throw new Error("This car does not exist")
+       }
+   }
+   checkCarModel() {
+       this.model = this.model.toLowerCase()
+       if (carNames.get(this.name).includes(carNames.get(this.name).find(el => el.model == this.model))) {
+           return this.model
+       } else if (carNames.get(this.name).includes(carNames.get(this.name).find(el => el.model.startsWith(this.model[0])))) {
+           console.log(carNames.get(this.name).includes(carNames.get(this.name).find(el => el.model.startsWith(this.model[0]))));
+           let exactObjetc = carNames.get(this.name).filter(el => el.model.startsWith(this.model[0]))[0]
+           console.log(exactObjetc);
+           return this.model = exactObjetc.model 
+       } else {
+           throw new Error("Model does not exist")
+       }
+   }
+
+   checkEngine() {
+       let exactObjetc = carNames.get(this.name).filter(el => el.model.startsWith(this.model[0]))[0]
+       if (exactObjetc.enginePower.includes(this.engineVolume)) {
+           exactObjetc.engineVolume = this.engineVolume
+           console.log(exactObjetc.engineVolume);
+           this.#horsePower = exactObjetc.setHorsePower(exactObjetc.engineVolume)
+           this.#price = exactObjetc.price
+       }
+       else {
+           throw new CarError(this.name + " " + this.model + " does not have this type of engine")
+       }
+     
+   }
+   toString() {
+       try {
+           this.checkCarName()
+       } catch (error) {
+           console.log(error, carNames.keys());
+       }
+       try {
+           this.checkCarModel()
+       } catch (error) {
+           console.log(error, carNames.get(this.name));
+       }
+       try {
+           this.checkEngine()
+       } catch (error) {
+           console.log(error.name, error.message, "\n", "Select an engine that is in the list:", "\n", carNames.get(this.name).filter(el => el.model.startsWith(this.model[0]))[0].enginePower);
+       }
+
+       this.#price = setCarPrice(this.year,this.#price)
+       
+       return this.constructor.name + " " + this.name.toUpperCase() + ", model: " + this.model + ", year: " + this.year + ", Engine: " + this.engineVolume + " Horse Power: " + this.#horsePower+ " Price: " + this.#price;
+   }
+
+
+}
+
+class Truck extends Vehicle {
+   trailerExists = Boolean
+   refrigirator = Boolean
+   _trailerSize = null
+   #maxScale = null
+
+
+   set trailerSize(value) {
+       this._trailerSize = value
+   }
+   get maxScale() {
+       return this._trailerSize
+   }
+   set model(value) {
+       this._model = value
+   }
+   set enginePower(value) {
+       this._enginePower = value
+   }
+   set horsePower(value) {
+       this._horsePower = value
+   }
+}
+
+class Cart extends Vehicle {
+   passengerSeat = null
+   pullerType = null
+   _pullersCount = null
+   #maxDistance = null
+
+   set pullersCount(value) {
+       this._pullersCount = value
+   }
+   get pullersCount() {
+       return this._pullersCount
+   }
+
+   fn() {
+       if (isNaN(this.passengerSeat)) {
+           this.passengerSeat = 0
+           throw new Error()
+       }
+   }
+   toString() {
+       try {
+           this.fn()
+       } catch (err) {
+           console.log("must be a number");
+       } return this.passengerSeat + " " + this.pullerType
+   }
+
+}
+
+
+let car = new Car()
+car.name = "mercedes"
+car.model = "a -class"
+car.year = 2005
+car.engineVolume = 2
+console.log(car.toString());
+
+
+
+*/
